@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Catalog.Data;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 namespace Catalog
@@ -11,6 +13,9 @@ namespace Catalog
             //    .AddApplicationServices()
             //    .AddInfrastructureServices(configuration)
             //    .AddApiServices(configuration);
+            var connectionString = configuration.GetConnectionString("Database");
+            services.AddDbContext<CatalogDbContext>(options =>
+               options.UseNpgsql(connectionString));
             return services;
         }
         public static IApplicationBuilder UseCatalogModule(this IApplicationBuilder app)
